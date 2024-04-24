@@ -2,14 +2,14 @@ use rgb::RGB8;
 use textplots::{ColorPlot, Chart, Shape};
 use std::{thread, time::Duration};
 
+const i64 SLEEP_DURATION = 500;
 
-pub fn visualise(array: &Vec<i8>, sleep_duration: u64) {
+pub fn visualise(array: &Vec<i8>) {
     std::process::Command::new("clear").status().unwrap();
     let data_points = format_to_data_series(array);
     visualise_graph(data_points);
-    thread::sleep(Duration::from_millis(sleep_duration));
+    thread::sleep(Duration::from_millis(SLEEP_DURATION));
 }
-
 
 fn format_to_data_series(array: &Vec<i8>) -> Vec<(f32, f32)> {
     array

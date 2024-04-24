@@ -1,8 +1,6 @@
 use rand;
 extern crate graphing;
 
-const SLEEP_DURATION: u64 = 500;
-
 fn main() {
     let array: [i8; 32] = rand::random();
     let sorted = quicksort(array.to_vec(), true);
@@ -20,19 +18,19 @@ fn main() {
     );
 }
 
-fn quicksort(array: Vec<i8>, visualise_sorting: bool) -> Vec<i8> {
+fn quicksort(array: Vec<i8>, visualise: bool) -> Vec<i8> {
     if array.len() <= 1 {
         return array;
     }
     let pivot = array.len() - 1;
     let (less, more, pivot) = partition(array.to_vec(), pivot);
 
-    let less_sorted = quicksort(less, visualise_sorting);
-    let more_sorted = quicksort(more, visualise_sorting);
+    let less_sorted = quicksort(less, visualise);
+    let more_sorted = quicksort(more, visualise);
     let sorted = [less_sorted, vec![array[pivot]], more_sorted].concat();
 
-    if visualise_sorting {
-        graphing::visualise(&sorted, SLEEP_DURATION);
+    if visualise {
+        graphing::visualise(&sorted);
     }
 
     sorted

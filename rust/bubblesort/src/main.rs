@@ -20,7 +20,7 @@ fn main() {
     );
 }
 
-fn bubble_sort(mut array: Vec<i8>, visualise_sorting: bool) -> Vec<i8> {
+fn bubble_sort(mut array: Vec<i8>, visualise: bool) -> Vec<i8> {
     let max = array.len() - 1;
     for _ in 0..max {
         let mut swapped = false;
@@ -31,8 +31,8 @@ fn bubble_sort(mut array: Vec<i8>, visualise_sorting: bool) -> Vec<i8> {
             }
         }
 
-        if visualise_sorting {
-            graphing::visualise(&array, SLEEP_DURATION);
+        if visualise {
+            graphing::visualise(&array);
         }
 
         if !swapped {

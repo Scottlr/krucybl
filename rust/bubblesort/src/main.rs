@@ -1,17 +1,26 @@
 use rand;
-use rgb::RGB8;
-use textplots::{ColorPlot, Chart, Shape};
-use std::{thread, time::Duration};
+extern crate graphing;
+
+const SLEEP_DURATION: u64 = 500;
 
 fn main() {
     let array: [i8; 32] = rand::random();
-    let sorted = bubble_sort(array.to_vec());
-    println!("Sorted: \n{:?}", sorted)
+    let sorted = bubble_sort(array.to_vec(), true);
 
-
+    let start_time = std::time::Instant::now();
+    bubble_sort(array.to_vec(), false);
+    let elapsed_time = start_time.elapsed();
+    
+    //Performance check on a 32 is redundant, but regardless.
+    println!("Sorted Array: \n{:?}", sorted);
+    println!(
+        "Time taken to BubbleSort: {}ns. {}ms", 
+        elapsed_time.as_nanos(), 
+        elapsed_time.as_millis()
+    );
 }
 
-fn bubble_sort(mut array: Vec<i8>) -> Vec<i8> {
+fn bubble_sort(mut array: Vec<i8>, visualise_sorting: bool) -> Vec<i8> {
     let max = array.len() - 1;
     for _ in 0..max {
         let mut swapped = false;
@@ -22,26 +31,13 @@ fn bubble_sort(mut array: Vec<i8>) -> Vec<i8> {
             }
         }
 
-        visualise(&array);
+        if visualise_sorting {
+            graphing::visualise(&array, SLEEP_DURATION);
+        }
 
         if !swapped {
             break;
-        }
+        } 
     }
     array
-}
-
-fn visualise(array: &Vec<i8>) {
-    std::process::Command::new("clear").status().unwrap();
-    let mut data = Vec::with_capacity(array.len());
-    for (index, value) in array.iter().enumerate() {
-        data.push((index as f32, *value as f32));
-    }
-
-    let mut chart = Chart::new(64, 60, 0.0, 32.0);
-    chart.linecolorplot(
-        &Shape::Bars(&data), 
-        RGB8 { r: 255, g: 0, b: 0 }
-    ).display();
-    thread::sleep(Duration::from_millis(333));
 }
